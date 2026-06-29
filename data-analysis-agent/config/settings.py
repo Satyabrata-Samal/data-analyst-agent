@@ -28,4 +28,10 @@ class Settings(BaseSettings):
     log_file: str = "agent_run.log"
 
 
-settings = Settings()
+try:
+    settings = Settings()
+except Exception as e:
+    raise RuntimeError(
+        "Failed to load settings. Ensure ANTHROPIC_API_KEY is set in your .env file.\n"
+        f"Details: {e}"
+    ) from e
