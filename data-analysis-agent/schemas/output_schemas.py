@@ -7,7 +7,6 @@ these schemas define the shape of parsed LLM JSON and the final user-facing resp
 """
 
 from typing import Literal
-
 from pydantic import BaseModel, Field
 
 
@@ -72,9 +71,6 @@ class CritiqueResult(BaseModel):
     suggestions: list[str] = Field(
         description="Concrete improvements that should be made before approval.",
     )
-    approved: bool = Field(
-        description="True if the analysis is approved (score >= 7.0).",
-    )
 
 
 class ValidationResult(BaseModel):
@@ -112,6 +108,9 @@ class FinalResponse(BaseModel):
     )
     report: InsightReport = Field(
         description="Structured insight report with findings, coverage, and limitations.",
+    )
+    validation_result: ValidationResult = Field(
+        description="Result of the initial CSV and question validation gate.",
     )
     execution_trace_summary: list[str] = Field(
         description="High-level summary of steps taken during agent execution.",
