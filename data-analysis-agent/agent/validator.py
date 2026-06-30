@@ -1,7 +1,7 @@
 """Input validation and CSV loading for the data analysis agent.
 
 Runs a ordered sequence of file, size, parse, and data-quality checks before
-returning a validated (and optionally sampled) DataFrame for downstream nodes.
+returning a validated DataFrame for downstream nodes.
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ def _rename_duplicate_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def validate_and_load(csv_path: str) -> tuple[ValidationResult, pd.DataFrame | None]:
-    """Validate a CSV file and load it, sampling if it exceeds the row threshold."""
+    """Validate a CSV file and load it."""
     path = Path(csv_path)
 
     # 1. FILE EXISTS CHECK
@@ -223,42 +223,20 @@ def validate_and_load(csv_path: str) -> tuple[ValidationResult, pd.DataFrame | N
     else:
         log_tool_call(logger, "validator", {"check": "duplicate_columns"}, "passed")
 
-    # 11. SAMPLING
-    log_tool_call(
-        logger,
-        "validator",
-        {"check": "sampling", "row_count": row_count, "threshold": settings.sample_threshold},
-        "running",
-    )
-    if row_count > settings.sample_threshold:
-        df = df.sample(n=settings.sample_size, random_state=42)
-        was_sampled = True
-        sample_size = settings.sample_size
-        log_tool_call(
-            logger,
-            "validator",
-            {"check": "sampling", "sample_size": sample_size},
-            "sampled",
-        )
-    else:
-        was_sampled = False
-        sample_size = None
-        log_tool_call(logger, "validator", {"check": "sampling"}, "not needed")
-
-    # 12. PASS
+    # 11. PASS
     result = ValidationResult(
         passed=True,
         error_message=None,
         row_count=row_count,
         column_count=column_count,
         file_size_mb=round(size_mb, 2),
-        was_sampled=was_sampled,
-        sample_size=sample_size,
+        was_sampled=False,
+        sample_size=None,
     )
     log_tool_call(
         logger,
         "validator",
-        {"check": "complete", "was_sampled": was_sampled},
+        {"check": "complete"},
         "passed",
     )
 
