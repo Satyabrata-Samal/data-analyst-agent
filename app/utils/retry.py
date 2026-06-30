@@ -17,8 +17,8 @@ from typing import Any, ParamSpec, TypeVar, cast
 
 import anthropic
 
-from config.settings import settings
-from utils.logger import get_logger, log_error
+from app.config.settings import settings
+from app.utils.logger import get_logger, log_error
 
 logger = get_logger(__name__)
 

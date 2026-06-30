@@ -8,7 +8,7 @@ emit consistent log lines and return formatted strings for appending to
 import logging
 from typing import Any
 
-from config.settings import settings
+from app.config.settings import settings
 
 _LOG_FORMAT = "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
 _DATE_FORMAT = "%Y-%m-%d %H:%M:%S"

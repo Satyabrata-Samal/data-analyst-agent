@@ -1,0 +1,16 @@
+2026-06-30 06:22:57 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 4, 'columns': 6} | result=starting
+2026-06-30 06:22:57 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 1} | result=complete
+2026-06-30 06:22:57 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 0, 'columns': 0} | result=starting
+2026-06-30 06:22:57 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 06:23:24 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 4, 'columns': 6} | result=starting
+2026-06-30 06:23:24 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 2} | result=complete
+2026-06-30 06:23:24 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 0, 'columns': 0} | result=starting
+2026-06-30 06:23:24 | INFO | tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 06:39:51 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 4, 'columns': 6} | result=starting
+2026-06-30 06:39:51 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 2} | result=complete
+2026-06-30 06:39:51 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 0, 'columns': 0} | result=starting
+2026-06-30 06:39:51 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 4, 'columns': 6} | result=starting
+2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 2} | result=complete
+2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 0, 'columns': 0} | result=starting
+2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
