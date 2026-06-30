@@ -84,9 +84,10 @@ def _build_categorical_summary(df: pd.DataFrame) -> dict[str, dict[str, Any]]:
     for col in df.columns:
         series = df[col]
         if not (
-            pd.api.types.is_object_dtype(series)
-            or pd.api.types.is_categorical_dtype(series)
-        ):
+                pd.api.types.is_object_dtype(series)
+                or isinstance(series.dtype, pd.CategoricalDtype)
+            ):
+
             continue
 
         value_counts = series.astype(str).value_counts().head(5)
