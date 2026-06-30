@@ -14,3 +14,24 @@
 2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 2} | result=complete
 2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 0, 'columns': 0} | result=starting
 2026-06-30 06:41:52 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'subprocess'} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'os.system'} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'eval('} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': '__import__'} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'requests'} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'open('} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'error': 'invalid syntax (<unknown>, line 1)'} | result=syntax_error
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': '/tmp/data.csv', 'timeout': 30} | result=starting
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 8} | result=complete
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis', 'pattern': 'subprocess'} | result=blocked
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': '/tmp/data.csv', 'timeout': 30} | result=starting
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': False, 'returncode': 1} | result=runtime_error
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': '/tmp/data.csv', 'timeout': 30} | result=starting
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'timeout': 30} | result=timeout
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': '/tmp/data.csv', 'timeout': 30} | result=starting
+2026-06-30 06:48:21 | ERROR | app.tools.code_executor | ERROR | code_executor | RuntimeError: boom
