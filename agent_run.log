@@ -35,3 +35,172 @@
 2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
 2026-06-30 06:48:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': '/tmp/data.csv', 'timeout': 30} | result=starting
 2026-06-30 06:48:21 | ERROR | app.tools.code_executor | ERROR | code_executor | RuntimeError: boom
+2026-06-30 07:42:33 | INFO | app.agent.graph | Building data analysis agent graph
+2026-06-30 07:43:11 | INFO | app.agent.graph | Building data analysis agent graph
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists', 'path': 'data/fifa_world_cup_2026_player_performance.csv'} | result=running
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists'} | result=passed
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension', 'extension': '.csv'} | result=running
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension'} | result=passed
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size', 'size_mb': 16.4} | result=running
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size'} | result=passed
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview', 'nrows': 5} | result=running
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview'} | result=passed
+2026-06-30 07:43:11 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load'} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load', 'row_count': 54600, 'column_count': 75} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count', 'column_count': 75} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count'} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count', 'row_count': 54600} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count'} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=running
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=passed
+2026-06-30 07:43:12 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'complete'} | result=passed
+2026-06-30 07:43:12 | ERROR | __main__ | Graph execution failed: 'csv_path'
+2026-06-30 07:45:06 | INFO | app.agent.graph | Building data analysis agent graph
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists', 'path': 'data/fifa_world_cup_2026_player_performance.csv'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension', 'extension': '.csv'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size', 'size_mb': 16.4} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview', 'nrows': 5} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load', 'row_count': 54600, 'column_count': 75} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count', 'column_count': 75} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count', 'row_count': 54600} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=running
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=passed
+2026-06-30 07:45:06 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'complete'} | result=passed
+2026-06-30 07:45:06 | ERROR | __main__ | Graph execution failed: 'csv_path'
+2026-06-30 07:45:30 | INFO | app.agent.graph | Building data analysis agent graph
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists', 'path': 'data/fifa_world_cup_2026_player_performance.csv'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension', 'extension': '.csv'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size', 'size_mb': 16.4} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview', 'nrows': 5} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load', 'row_count': 54600, 'column_count': 75} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count', 'column_count': 75} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count', 'row_count': 54600} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=running
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'complete'} | result=passed
+2026-06-30 07:45:30 | INFO | app.agent.nodes.profiler | NODE ENTER | profiler | {'csv_path': 'data/fifa_world_cup_2026_player_performance.csv'}
+2026-06-30 07:45:30 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 54600, 'columns': 75} | result=starting
+2026-06-30 07:45:32 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 07:45:51 | INFO | app.agent.nodes.profiler | NODE EXIT | profiler | {'warnings': 0}
+2026-06-30 07:45:51 | INFO | app.agent.nodes.clarifier | NODE ENTER | clarifier | {'question': 'Who scored the most goals?'}
+2026-06-30 07:45:57 | INFO | app.agent.nodes.clarifier | NODE EXIT | clarifier | {'needs_clarification': False, 'questions': 0}
+2026-06-30 07:45:57 | INFO | app.agent.nodes.planner | NODE ENTER | planner | {'question': 'Who scored the most goals?'}
+2026-06-30 07:46:09 | INFO | app.agent.nodes.planner | NODE EXIT | planner | {'steps': 5}
+2026-06-30 07:46:09 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 0, 'question': 'Who scored the most goals?'}
+2026-06-30 07:46:09 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:46:09 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:46:09 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 0, 'code_length': 0}
+2026-06-30 07:46:09 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:46:09 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:46:09 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:46:14 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 1}
+2026-06-30 07:46:14 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 1, 'question': 'Who scored the most goals?'}
+2026-06-30 07:46:14 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:46:14 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:46:14 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 1, 'code_length': 0}
+2026-06-30 07:46:14 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:46:14 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:46:14 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:46:20 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 2}
+2026-06-30 07:46:20 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 2, 'question': 'Who scored the most goals?'}
+2026-06-30 07:46:20 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:46:20 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:46:20 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 2, 'code_length': 0}
+2026-06-30 07:46:20 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:46:20 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:46:21 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:46:27 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 3}
+2026-06-30 07:46:27 | INFO | app.agent.nodes.synthesizer | NODE ENTER | synthesizer | {'critique_iteration': 0}
+2026-06-30 07:46:54 | INFO | app.agent.nodes.synthesizer | NODE EXIT | synthesizer | {'insights': 0}
+2026-06-30 07:46:54 | INFO | app.agent.nodes.critic | NODE ENTER | critic | {'critique_iteration': 0}
+2026-06-30 07:46:54 | ERROR | app.agent.nodes.critic | ERROR | critic | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:46:54 | INFO | app.agent.nodes.critic | NODE EXIT | critic | {'error': True}
+2026-06-30 07:46:54 | INFO | app.agent.nodes.responder | NODE ENTER | responder | {'critique_score': 7.0}
+2026-06-30 07:47:02 | INFO | app.agent.nodes.responder | NODE EXIT | responder | {'complete': True}
+2026-06-30 07:47:57 | INFO | app.agent.graph | Building data analysis agent graph
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists', 'path': 'data/fifa_world_cup_2026_player_performance.csv'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_exists'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension', 'extension': '.csv'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'extension'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size', 'size_mb': 16.4} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'file_size'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview', 'nrows': 5} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'parse_preview'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'full_load', 'row_count': 54600, 'column_count': 75} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'empty'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count', 'column_count': 75} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'column_count'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count', 'row_count': 54600} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'row_count'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'all_null'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=running
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'duplicate_columns'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.validator | TOOL CALL | validator | inputs={'check': 'complete'} | result=passed
+2026-06-30 07:47:57 | INFO | app.agent.nodes.profiler | NODE ENTER | profiler | {'csv_path': 'data/fifa_world_cup_2026_player_performance.csv'}
+2026-06-30 07:47:57 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'rows': 54600, 'columns': 75} | result=starting
+2026-06-30 07:47:58 | INFO | app.tools.csv_profiler | TOOL CALL | csv_profiler | inputs={'warnings': 0} | result=complete
+2026-06-30 07:48:19 | INFO | app.agent.nodes.profiler | NODE EXIT | profiler | {'warnings': 0}
+2026-06-30 07:48:19 | INFO | app.agent.nodes.clarifier | NODE ENTER | clarifier | {'question': 'Who scored the most goals?'}
+2026-06-30 07:48:22 | INFO | app.agent.nodes.clarifier | NODE EXIT | clarifier | {'needs_clarification': False, 'questions': 0}
+2026-06-30 07:48:22 | INFO | app.agent.nodes.planner | NODE ENTER | planner | {'question': 'Who scored the most goals?'}
+2026-06-30 07:48:36 | INFO | app.agent.nodes.planner | NODE EXIT | planner | {'steps': 8}
+2026-06-30 07:48:36 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 0, 'question': 'Who scored the most goals?'}
+2026-06-30 07:48:36 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:48:36 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:48:36 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 0, 'code_length': 0}
+2026-06-30 07:48:36 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:48:36 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:48:37 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:48:42 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 1}
+2026-06-30 07:48:42 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 1, 'question': 'Who scored the most goals?'}
+2026-06-30 07:48:42 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:48:42 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:48:42 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 1, 'code_length': 0}
+2026-06-30 07:48:42 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:48:42 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:48:43 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:48:52 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 2}
+2026-06-30 07:48:52 | INFO | app.agent.nodes.code_generator | NODE ENTER | code_generator | {'retry_count': 2, 'question': 'Who scored the most goals?'}
+2026-06-30 07:48:52 | ERROR | app.agent.nodes.code_generator | ERROR | code_generator | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:48:52 | INFO | app.agent.nodes.code_generator | NODE EXIT | code_generator | {'error': True}
+2026-06-30 07:48:52 | INFO | app.agent.nodes.observer | NODE ENTER | observer | {'retry_count': 2, 'code_length': 0}
+2026-06-30 07:48:52 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'static_analysis'} | result=passed
+2026-06-30 07:48:52 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'check': 'execute', 'csv_path': 'data/fifa_world_cup_2026_player_performance.csv', 'timeout': 30} | result=starting
+2026-06-30 07:48:53 | INFO | app.tools.code_executor | TOOL CALL | code_executor | inputs={'success': True, 'truncated': False, 'stdout_length': 0} | result=complete
+2026-06-30 07:49:03 | INFO | app.agent.nodes.observer | NODE EXIT | observer | {'execution_success': True, 'status': 'retry', 'retry_count': 3}
+2026-06-30 07:49:03 | INFO | app.agent.nodes.synthesizer | NODE ENTER | synthesizer | {'critique_iteration': 0}
+2026-06-30 07:49:16 | INFO | app.agent.nodes.synthesizer | NODE EXIT | synthesizer | {'insights': 2}
+2026-06-30 07:49:16 | INFO | app.agent.nodes.critic | NODE ENTER | critic | {'critique_iteration': 0}
+2026-06-30 07:49:16 | ERROR | app.agent.nodes.critic | ERROR | critic | ValueError: Received multiple non-consecutive system messages.
+2026-06-30 07:49:16 | INFO | app.agent.nodes.critic | NODE EXIT | critic | {'error': True}
+2026-06-30 07:49:16 | INFO | app.agent.nodes.responder | NODE ENTER | responder | {'critique_score': 7.0}
+2026-06-30 07:49:23 | INFO | app.agent.nodes.responder | NODE EXIT | responder | {'complete': True}

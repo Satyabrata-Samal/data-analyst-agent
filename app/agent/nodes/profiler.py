@@ -19,6 +19,35 @@ logger = get_logger(__name__)
 
 def run_profiler(state: AgentState) -> dict[str, Any]:
     """Profile the validated DataFrame and produce a natural-language summary."""
+    # region agent log
+    import json as _json
+    import time as _time
+
+    with open(
+        "/Users/satya/Documents/ensemble_data_analysis_agent/.cursor/debug-c92400.log",
+        "a",
+        encoding="utf-8",
+    ) as _dbg_f:
+        _dbg_f.write(
+            _json.dumps(
+                {
+                    "sessionId": "c92400",
+                    "hypothesisId": "H1",
+                    "location": "app/agent/nodes/profiler.py:entry",
+                    "message": "profiler received state keys",
+                    "data": {
+                        "keys": sorted(state.keys()),
+                        "has_csv_path": "csv_path" in state,
+                        "has_df": "df" in state,
+                        "has_user_question": "user_question" in state,
+                    },
+                    "timestamp": int(_time.time() * 1000),
+                }
+            )
+            + "\n"
+        )
+    # endregion
+
     entry_log = log_node_entry(logger, "profiler", {"csv_path": state["csv_path"]})
 
     df = state["df"]

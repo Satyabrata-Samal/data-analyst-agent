@@ -29,6 +29,13 @@ class InputState(TypedDict):
 
 class AgentState(TypedDict, total=False):
 
+    # --- Input / runtime fields ---
+    csv_path: str
+    user_question: str
+    df: Any  # validated pandas DataFrame, in-memory for the graph run
+    validation_result: dict[str, Any]
+    insight_report: dict[str, Any]
+
     # --- Profiling fields ---
     df_profile: dict[str, Any]  # shape, dtypes, nulls, sample rows, describe stats
     validation_error: str | None
