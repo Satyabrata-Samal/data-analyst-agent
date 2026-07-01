@@ -6,16 +6,21 @@ import json
 import re
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from pydantic import ValidationError
 
-from app.config.settings import settings
 from app.prompts.few_shot_examples import CRITIC_EXAMPLES
 from app.prompts.system_prompts import CRITIC_PROMPT
 from app.schemas.output_schemas import CritiqueResult
 from app.schemas.state_schema import AgentState
-from app.utils.logger import get_logger, log_error, log_node_entry, log_node_exit
+from app.utils.llm import get_chat_model
+from app.utils.logger import (
+    get_logger,
+    log_error,
+    log_llm_call,
+    log_node_entry,
+    log_node_exit,
+)
 
 logger = get_logger(__name__)
 
@@ -62,7 +67,12 @@ def _parse_critic_response(raw_content: str) -> CritiqueResult:
             issues=[str(issue) for issue in issues],
             suggestions=[str(suggestion) for suggestion in suggestions],
         )
-    except (json.JSONDecodeError, TypeError, ValueError, ValidationError):
+    except (json.JSONDecodeError, TypeError, ValueError, ValidationError) as exc:
+        logger.warning(
+            "Failed to parse critic response: %s | raw_content=%r",
+            exc,
+            raw_content[:500],
+        )
         return _default_critique()
 
 
@@ -81,19 +91,21 @@ def run_critic(state: AgentState) -> dict[str, Any]:
     new_iteration = critique_iteration + 1
 
     try:
-        model = ChatAnthropic(
-            model=settings.model_name,
-            api_key=settings.anthropic_api_key,
-            max_tokens=settings.max_tokens,
-        )
+        model = get_chat_model()
         messages = (
             [SystemMessage(content=CRITIC_PROMPT)]
             + _few_shot_messages()
-            + list(state.get("messages", []))
             + [HumanMessage(content=user_message_content)]
         )
         response = model.invoke(messages)
         raw_response_content = str(response.content)
+        log_llm_call(
+            logger,
+            "critic",
+            CRITIC_PROMPT,
+            user_message_content,
+            raw_response_content,
+        )
         critique = _parse_critic_response(raw_response_content)
 
         exit_log = log_node_exit(
@@ -106,10 +118,6 @@ def run_critic(state: AgentState) -> dict[str, Any]:
             "critique_score": critique.score,
             "critique_issues": critique.issues,
             "critique_iteration": new_iteration,
-            "messages": [
-                HumanMessage(content=user_message_content),
-                AIMessage(content=raw_response_content),
-            ],
             "agent_log": [entry_log, exit_log],
         }
     except Exception as exc:
@@ -121,6 +129,5 @@ def run_critic(state: AgentState) -> dict[str, Any]:
             "critique_score": critique.score,
             "critique_issues": critique.issues,
             "critique_iteration": new_iteration,
-            "messages": [],
             "agent_log": [entry_log, exit_log],
         }

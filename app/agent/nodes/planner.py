@@ -6,14 +6,19 @@ import json
 import re
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 
-from app.config.settings import settings
 from app.prompts.system_prompts import PLANNER_PROMPT
 from app.schemas.output_schemas import AnalysisPlan
 from app.schemas.state_schema import AgentState
-from app.utils.logger import get_logger, log_error, log_node_entry, log_node_exit
+from app.utils.llm import get_chat_model
+from app.utils.logger import (
+    get_logger,
+    log_error,
+    log_llm_call,
+    log_node_entry,
+    log_node_exit,
+)
 
 logger = get_logger(__name__)
 
@@ -52,7 +57,12 @@ def _parse_planner_response(raw_content: str) -> tuple[str, list[str]]:
         if not isinstance(steps, list):
             raise TypeError("steps must be a list")
         return reasoning, [str(step) for step in steps]
-    except (json.JSONDecodeError, TypeError, ValueError):
+    except (json.JSONDecodeError, TypeError, ValueError) as exc:
+        logger.warning(
+            "Failed to parse planner response: %s | raw_content=%r",
+            exc,
+            raw_content[:500],
+        )
         return "Parsing failed", [raw_content]
 
 
@@ -68,17 +78,21 @@ def run_planner(state: AgentState) -> dict[str, Any]:
     raw_response_content = ""
 
     try:
-        model = ChatAnthropic(
-            model=settings.model_name,
-            api_key=settings.anthropic_api_key,
-            max_tokens=settings.max_tokens,
-        )
+        model = get_chat_model()
         response = model.invoke(
-            [SystemMessage(content=PLANNER_PROMPT)]
-            + list(state.get("messages", []))
-            + [HumanMessage(content=user_message_content)],
+            [
+                SystemMessage(content=PLANNER_PROMPT),
+                HumanMessage(content=user_message_content),
+            ],
         )
         raw_response_content = str(response.content)
+        log_llm_call(
+            logger,
+            "planner",
+            PLANNER_PROMPT,
+            user_message_content,
+            raw_response_content,
+        )
 
         reasoning, steps = _parse_planner_response(raw_response_content)
         plan = AnalysisPlan(steps=steps, reasoning=reasoning)
@@ -91,10 +105,6 @@ def run_planner(state: AgentState) -> dict[str, Any]:
 
         return {
             "analysis_plan": plan.steps,
-            "messages": [
-                HumanMessage(content=user_message_content),
-                AIMessage(content=raw_response_content),
-            ],
             "agent_log": [entry_log, exit_log],
         }
     except Exception as exc:
@@ -105,6 +115,5 @@ def run_planner(state: AgentState) -> dict[str, Any]:
             "analysis_plan": [
                 "Unable to generate plan due to error. Proceeding with general analysis.",
             ],
-            "messages": [],
             "agent_log": [entry_log, exit_log],
         }

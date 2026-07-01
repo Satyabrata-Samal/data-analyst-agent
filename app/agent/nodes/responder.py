@@ -5,14 +5,13 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import ValidationError
 
-from app.config.settings import settings
 from app.prompts.system_prompts import RESPONDER_PROMPT
 from app.schemas.output_schemas import FinalResponse, InsightReport, ValidationResult
 from app.schemas.state_schema import AgentState
+from app.utils.llm import get_chat_model
 from app.utils.logger import get_logger, log_error, log_node_entry, log_node_exit
 
 logger = get_logger(__name__)
@@ -69,15 +68,12 @@ def run_responder(state: AgentState) -> dict[str, Any]:
         insight_report = _build_insight_report(state)
         validation_result = _build_validation_result(state)
 
-        model = ChatAnthropic(
-            model=settings.model_name,
-            api_key=settings.anthropic_api_key,
-            max_tokens=settings.max_tokens,
-        )
+        model = get_chat_model()
         response = model.invoke(
-            [SystemMessage(content=RESPONDER_PROMPT)]
-            + list(state.get("messages", []))
-            + [HumanMessage(content=user_message_content)],
+            [
+                SystemMessage(content=RESPONDER_PROMPT),
+                HumanMessage(content=user_message_content),
+            ],
         )
         natural_language_response = str(response.content)
 
@@ -96,10 +92,6 @@ def run_responder(state: AgentState) -> dict[str, Any]:
 
         return {
             "final_response": final_response.model_dump(),
-            "messages": [
-                HumanMessage(content=user_message_content),
-                AIMessage(content=natural_language_response),
-            ],
             "agent_log": [entry_log, exit_log],
         }
     except Exception as exc:
@@ -111,6 +103,5 @@ def run_responder(state: AgentState) -> dict[str, Any]:
                 "error": str(exc),
                 "question": state["user_question"],
             },
-            "messages": [],
             "agent_log": [entry_log, exit_log],
         }

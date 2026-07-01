@@ -12,8 +12,6 @@ import tempfile
 from dataclasses import dataclass
 from typing import Any
 
-from langchain_core.messages import AIMessage
-
 from app.agent.graph import app_graph
 from app.evaluation.test_scenarios import TEST_SCENARIOS, TestScenario
 from app.utils.logger import get_logger
@@ -48,14 +46,8 @@ def _write_temp_csv(csv_data: str) -> str:
 
 
 def _extract_actual_response(final_state: dict[str, Any]) -> str:
-    """Return the last AI message content, or serialised final_response as fallback."""
-    messages = final_state.get("messages", [])
-    for message in reversed(messages):
-        if isinstance(message, AIMessage):
-            return str(message.content)
-
-    final_response = final_state.get("final_response", {})
-    return json.dumps(final_response)
+    """Serialize the FinalResponse for keyword scoring."""
+    return json.dumps(final_state.get("final_response", {}))
 
 
 def _score_keywords(

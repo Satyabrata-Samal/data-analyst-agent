@@ -67,6 +67,25 @@ def log_tool_call(
     return line
 
 
+def log_llm_call(
+    logger: logging.Logger,
+    node_name: str,
+    system_prompt_used: str,
+    user_message_content: str,
+    raw_response_content: str,
+) -> str:
+    """Log an LLM invocation at DEBUG level and return the formatted line."""
+    line = (
+        "LLM CALL | "
+        f"{node_name} | "
+        f"system_prompt={system_prompt_used!r} | "
+        f"user_message={user_message_content!r} | "
+        f"raw_response={raw_response_content!r}"
+    )
+    logger.debug(line)
+    return line
+
+
 def log_error(logger: logging.Logger, node_name: str, error: Exception) -> str:
     """Log an error at ERROR level and return a line for ``agent_log``."""
     line = f"ERROR | {node_name} | {type(error).__name__}: {error}"

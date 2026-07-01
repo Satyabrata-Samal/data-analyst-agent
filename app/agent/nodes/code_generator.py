@@ -6,15 +6,20 @@ import json
 import re
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-from app.config.settings import settings
 from app.prompts.few_shot_examples import CODE_GENERATOR_EXAMPLES
 from app.prompts.system_prompts import CODE_GENERATOR_PROMPT
 from app.schemas.output_schemas import GeneratedCode
 from app.schemas.state_schema import AgentState
-from app.utils.logger import get_logger, log_error, log_node_entry, log_node_exit
+from app.utils.llm import get_chat_model
+from app.utils.logger import (
+    get_logger,
+    log_error,
+    log_llm_call,
+    log_node_entry,
+    log_node_exit,
+)
 
 logger = get_logger(__name__)
 
@@ -67,7 +72,12 @@ def _parse_code_generator_response(
             str(parsed.get("explanation", "")),
             str(parsed.get("expected_output_description", "")),
         )
-    except (json.JSONDecodeError, TypeError, ValueError):
+    except (json.JSONDecodeError, TypeError, ValueError) as exc:
+        logger.warning(
+            "Failed to parse code_generator response: %s | raw_content=%r",
+            exc,
+            raw_content[:500],
+        )
         return raw_content, "", ""
 
 
@@ -77,6 +87,7 @@ def run_code_generator(state: AgentState) -> dict[str, Any]:
         logger,
         "code_generator",
         {
+            "attempt_number": state.get("retry_count", 0) + 1,
             "retry_count": state.get("retry_count", 0),
             "question": state["user_question"],
         },
@@ -86,19 +97,21 @@ def run_code_generator(state: AgentState) -> dict[str, Any]:
     raw_response_content = ""
 
     try:
-        model = ChatAnthropic(
-            model=settings.model_name,
-            api_key=settings.anthropic_api_key,
-            max_tokens=settings.max_tokens,
-        )
+        model = get_chat_model()
         messages = (
             [SystemMessage(content=CODE_GENERATOR_PROMPT)]
             + _few_shot_messages()
-            + list(state.get("messages", []))
             + [HumanMessage(content=user_message_content)]
         )
         response = model.invoke(messages)
         raw_response_content = str(response.content)
+        log_llm_call(
+            logger,
+            "code_generator",
+            CODE_GENERATOR_PROMPT,
+            user_message_content,
+            raw_response_content,
+        )
 
         code, explanation, expected_output_description = _parse_code_generator_response(
             raw_response_content,
@@ -119,10 +132,6 @@ def run_code_generator(state: AgentState) -> dict[str, Any]:
             "generated_code": generated.code,
             "code_explanation": generated.explanation,
             "static_analysis_error": None,
-            "messages": [
-                HumanMessage(content=user_message_content),
-                AIMessage(content=raw_response_content),
-            ],
             "agent_log": [entry_log, exit_log],
         }
     except Exception as exc:
@@ -133,6 +142,5 @@ def run_code_generator(state: AgentState) -> dict[str, Any]:
             "generated_code": "",
             "code_explanation": "Code generation failed.",
             "static_analysis_error": str(exc),
-            "messages": [],
             "agent_log": [entry_log, exit_log],
         }

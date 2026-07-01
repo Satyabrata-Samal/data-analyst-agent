@@ -38,6 +38,7 @@ class AgentState(TypedDict, total=False):
 
     # --- Profiling fields ---
     df_profile: dict[str, Any]  # shape, dtypes, nulls, sample rows, describe stats
+    profile_summary: str  # natural-language summary produced by the profiler
     validation_error: str | None
 
     messages: Annotated[list[BaseMessage], add_messages]

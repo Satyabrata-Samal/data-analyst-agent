@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import textwrap
 from dataclasses import dataclass
-from typing import Any
-from typing import Any
 
 
 @dataclass

@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     sample_threshold: int = 100_000
 
     code_execution_timeout: int = 30
-    max_stdout_bytes: int = 51_200
+    max_stdout_bytes: int = 8_192
     max_critique_iterations: int = 2
     critique_approval_threshold: float = 7.0
 

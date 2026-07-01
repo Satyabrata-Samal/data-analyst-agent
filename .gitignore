@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 .env
 .DS_Store
-.env.example
 data/
 .cursor/
 .pytest_cache/
+*.log

@@ -6,15 +6,20 @@ import json
 import re
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import ValidationError
 
-from app.config.settings import settings
 from app.prompts.system_prompts import SYNTHESIZER_PROMPT
 from app.schemas.output_schemas import Insight, InsightReport
 from app.schemas.state_schema import AgentState
-from app.utils.logger import get_logger, log_error, log_node_entry, log_node_exit
+from app.utils.llm import get_chat_model
+from app.utils.logger import (
+    get_logger,
+    log_error,
+    log_llm_call,
+    log_node_entry,
+    log_node_exit,
+)
 
 logger = get_logger(__name__)
 
@@ -90,24 +95,23 @@ def _parse_synthesizer_response(raw_content: str, state: AgentState) -> InsightR
             data_coverage_note=str(parsed.get("data_coverage_note", "")),
             limitations=[str(limitation) for limitation in limitations],
         )
-    except (json.JSONDecodeError, TypeError, ValueError, ValidationError):
+    except (json.JSONDecodeError, TypeError, ValueError, ValidationError) as exc:
+        logger.warning(
+            "Failed to parse synthesizer response: %s | raw_content=%r",
+            exc,
+            raw_content[:500],
+        )
         return _build_fallback_report(state)
 
 
 def _build_return(
     report: InsightReport,
-    user_message_content: str,
-    raw_response_content: str,
     entry_log: str,
     exit_log: str,
 ) -> dict[str, Any]:
     return {
         "insights": [insight.model_dump() for insight in report.insights],
         "insight_report": report.model_dump(),
-        "messages": [
-            HumanMessage(content=user_message_content),
-            AIMessage(content=raw_response_content),
-        ],
         "agent_log": [entry_log, exit_log],
     }
 
@@ -124,17 +128,21 @@ def run_synthesizer(state: AgentState) -> dict[str, Any]:
     raw_response_content = ""
 
     try:
-        model = ChatAnthropic(
-            model=settings.model_name,
-            api_key=settings.anthropic_api_key,
-            max_tokens=settings.max_tokens,
-        )
+        model = get_chat_model()
         response = model.invoke(
-            [SystemMessage(content=SYNTHESIZER_PROMPT)]
-            + list(state.get("messages", []))
-            + [HumanMessage(content=user_message_content)],
+            [
+                SystemMessage(content=SYNTHESIZER_PROMPT),
+                HumanMessage(content=user_message_content),
+            ],
         )
         raw_response_content = str(response.content)
+        log_llm_call(
+            logger,
+            "synthesizer",
+            SYNTHESIZER_PROMPT,
+            user_message_content,
+            raw_response_content,
+        )
         report = _parse_synthesizer_response(raw_response_content, state)
 
         exit_log = log_node_exit(
@@ -143,13 +151,7 @@ def run_synthesizer(state: AgentState) -> dict[str, Any]:
             {"insights": len(report.insights)},
         )
 
-        return _build_return(
-            report,
-            user_message_content,
-            raw_response_content,
-            entry_log,
-            exit_log,
-        )
+        return _build_return(report, entry_log, exit_log)
     except Exception as exc:
         log_error(logger, "synthesizer", exc)
         exit_log = log_node_exit(logger, "synthesizer", {"error": True})
@@ -158,6 +160,5 @@ def run_synthesizer(state: AgentState) -> dict[str, Any]:
         return {
             "insights": [insight.model_dump() for insight in report.insights],
             "insight_report": report.model_dump(),
-            "messages": [],
             "agent_log": [entry_log, exit_log],
         }

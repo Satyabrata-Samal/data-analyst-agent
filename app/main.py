@@ -59,35 +59,6 @@ def main() -> int:
 
     print("\n🤖 Agent starting analysis...\n")
 
-    # region agent log
-    import json as _json
-    import time as _time
-
-    with open(
-        "/Users/satya/Documents/ensemble_data_analysis_agent/.cursor/debug-c92400.log",
-        "a",
-        encoding="utf-8",
-    ) as _dbg_f:
-        _dbg_f.write(
-            _json.dumps(
-                {
-                    "sessionId": "c92400",
-                    "hypothesisId": "H2",
-                    "location": "app/main.py:pre_invoke",
-                    "message": "initial_state keys before graph invoke",
-                    "data": {
-                        "keys": sorted(initial_state.keys()),
-                        "has_csv_path": "csv_path" in initial_state,
-                        "has_df": "df" in initial_state,
-                        "has_user_question": "user_question" in initial_state,
-                    },
-                    "timestamp": int(_time.time() * 1000),
-                }
-            )
-            + "\n"
-        )
-    # endregion
-
     try:
         final_state = app_graph.invoke(initial_state)
     except Exception as exc:
