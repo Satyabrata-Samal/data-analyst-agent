@@ -5,6 +5,10 @@ returns structured analytical insights. Built with **LangGraph** and the
 **Anthropic Claude API**, it implements a full *Reason → Plan → Act → Observe → Respond*
 loop with self-critique, structured outputs, and a sandboxed code execution tool.
 
+# Demo
+<img width="368" height="240" alt="data_analyst agent " src="https://github.com/user-attachments/assets/ed5f3d3e-0b8b-4726-8778-7fdb028cb5ee" />
+
+
 ---
 
 ## 1. Chosen domain
