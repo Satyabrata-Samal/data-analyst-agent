@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.config.settings import settings
@@ -172,14 +173,20 @@ def run_observer(state: AgentState) -> dict[str, Any]:
             "retry_count": new_retry_count,
             "agent_log": [entry_log, exit_log],
         }
+    except anthropic.AuthenticationError:
+        # Bad/expired credentials never succeed on retry — abort instead of
+        # looping the graph back to code_generator until max_retries burns out.
+        raise
     except Exception as exc:
         log_error(logger, "observer", exc)
         exit_log = log_node_exit(logger, "observer", {"error": True})
+        new_retry_count = min(retry_count + 1, settings.max_retries)
 
         return {
             "execution_result": None,
             "execution_error": str(exc),
             "execution_truncated": False,
             "static_analysis_error": None,
+            "retry_count": new_retry_count,
             "agent_log": [entry_log, exit_log],
         }

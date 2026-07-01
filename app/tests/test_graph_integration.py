@@ -18,6 +18,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import anthropic
+import httpx
 import pandas as pd
 import pytest
 from langchain_core.language_models.fake_chat_models import FakeListChatModel
@@ -268,6 +270,72 @@ def test_graph_max_critique_iterations_exits_even_when_score_stays_low(
     assert final["critique_iteration"] == 2
     assert final["critique_score"] == 3.0
     assert "final_response" in final
+
+
+# --- fatal LLM errors must not loop ---
+
+
+def _auth_error() -> anthropic.AuthenticationError:
+    request = httpx.Request("POST", "https://api.anthropic.com/v1/messages")
+    response = httpx.Response(401, request=request, json={"error": {"message": "invalid x-api-key"}})
+    return anthropic.AuthenticationError("invalid x-api-key", response=response, body=None)
+
+
+class _RaisingModel:
+    def invoke(self, *args, **kwargs):
+        raise _auth_error()
+
+
+def test_graph_raises_on_authentication_error_instead_of_looping(
+    monkeypatch, sample_csv, sample_df
+):
+    # profiler/clarifier/planner succeed normally, then code_generator hits a
+    # bad API key. This must propagate out of app_graph.invoke immediately
+    # rather than bouncing between code_generator and observer forever.
+    fake = FakeListChatModel(
+        responses=[_profiler_reply(), _clarifier_reply(), _planner_reply()],
+    )
+    for module_path in ("app.agent.nodes.profiler", "app.agent.nodes.clarifier", "app.agent.nodes.planner"):
+        monkeypatch.setattr(f"{module_path}.get_chat_model", lambda fake=fake: fake)
+    monkeypatch.setattr(
+        "app.agent.nodes.code_generator.get_chat_model", lambda: _RaisingModel()
+    )
+
+    with pytest.raises(anthropic.AuthenticationError):
+        app_graph.invoke(_initial_state(sample_csv, sample_df))
+
+
+def test_graph_increments_retry_count_on_generic_observer_exception(
+    monkeypatch, sample_csv, sample_df
+):
+    # A non-fatal, unexpected exception from the observer's LLM call must still
+    # advance retry_count so route_after_observer eventually stops retrying,
+    # instead of looping with retry_count stuck at 0.
+    _patch_llm(
+        monkeypatch,
+        [
+            _profiler_reply(),
+            _clarifier_reply(),
+            _planner_reply(),
+            _code_reply("print(df.groupby('region')['revenue'].sum())"),
+            _synth_reply(),
+            _critic_reply(8.0),
+            _responder_reply(),
+        ],
+    )
+
+    class _BrokenObserverModel:
+        def invoke(self, *args, **kwargs):
+            raise RuntimeError("transient observer failure")
+
+    monkeypatch.setattr(
+        "app.agent.nodes.observer.get_chat_model", lambda: _BrokenObserverModel()
+    )
+    monkeypatch.setattr("app.agent.graph.settings.max_retries", 1)
+
+    final = app_graph.invoke(_initial_state(sample_csv, sample_df))
+
+    assert final["retry_count"] == 1
 
 
 # --- routing predicates in isolation ---

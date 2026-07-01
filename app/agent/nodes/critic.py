@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from pydantic import ValidationError
 
@@ -120,6 +121,8 @@ def run_critic(state: AgentState) -> dict[str, Any]:
             "critique_iteration": new_iteration,
             "agent_log": [entry_log, exit_log],
         }
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "critic", exc)
         exit_log = log_node_exit(logger, "critic", {"error": True})

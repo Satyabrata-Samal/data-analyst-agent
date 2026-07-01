@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.prompts.system_prompts import CLARIFIER_PROMPT
@@ -82,6 +83,8 @@ def run_clarifier(state: AgentState) -> dict[str, Any]:
             raw_response_content,
         )
         needs_clarification, questions = _parse_clarifier_response(raw_response_content)
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "clarifier", exc)
         needs_clarification = False

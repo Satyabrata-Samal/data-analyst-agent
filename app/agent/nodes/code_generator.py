@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from app.prompts.few_shot_examples import CODE_GENERATOR_EXAMPLES
@@ -134,6 +135,8 @@ def run_code_generator(state: AgentState) -> dict[str, Any]:
             "static_analysis_error": None,
             "agent_log": [entry_log, exit_log],
         }
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "code_generator", exc)
         exit_log = log_node_exit(logger, "code_generator", {"error": True})

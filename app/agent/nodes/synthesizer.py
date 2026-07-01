@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import ValidationError
 
@@ -152,6 +153,8 @@ def run_synthesizer(state: AgentState) -> dict[str, Any]:
         )
 
         return _build_return(report, entry_log, exit_log)
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "synthesizer", exc)
         exit_log = log_node_exit(logger, "synthesizer", {"error": True})

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import anthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.prompts.system_prompts import PROFILER_PROMPT
@@ -34,6 +35,8 @@ def run_profiler(state: AgentState) -> dict[str, Any]:
         ]
         response = model.invoke(llm_messages)
         profile_summary = str(response.content)
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "profiler", exc)
 

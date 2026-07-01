@@ -6,6 +6,7 @@ import json
 import re
 from typing import Any
 
+import anthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from app.prompts.system_prompts import PLANNER_PROMPT
@@ -107,6 +108,8 @@ def run_planner(state: AgentState) -> dict[str, Any]:
             "analysis_plan": plan.steps,
             "agent_log": [entry_log, exit_log],
         }
+    except anthropic.AuthenticationError:
+        raise
     except Exception as exc:
         log_error(logger, "planner", exc)
         exit_log = log_node_exit(logger, "planner", {"error": True})
