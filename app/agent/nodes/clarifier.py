@@ -91,11 +91,14 @@ def run_clarifier(state: AgentState) -> dict[str, Any]:
         questions = []
         answers = []
 
-    if needs_clarification and questions:
+    if needs_clarification and questions and not state.get("web_mode", False):
+        # CLI mode: collect answers interactively. In web mode we never block on
+        # stdin — the UI surfaces the questions and lets the user fold any extra
+        # context into the question up front instead.
         for question in questions:
             answer = input(f"\nClarification needed:\n Q: {question}\n A: ")
             answers.append(answer)
-    else:
+    elif not (needs_clarification and questions):
         questions = []
         answers = []
 

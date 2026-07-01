@@ -35,6 +35,7 @@ class AgentState(TypedDict, total=False):
     df: Any  # validated pandas DataFrame, in-memory for the graph run
     validation_result: dict[str, Any]
     insight_report: dict[str, Any]
+    web_mode: bool  # True when driven by the Streamlit UI; suppresses stdin prompts
 
     # --- Profiling fields ---
     df_profile: dict[str, Any]  # shape, dtypes, nulls, sample rows, describe stats
@@ -71,4 +72,5 @@ class AgentState(TypedDict, total=False):
 
     # --- Response fields ---
     final_response: dict[str, Any] | None
+    natural_language_response: str  # prose answer from the responder, for UI display
     agent_log: Annotated[list[str], add]

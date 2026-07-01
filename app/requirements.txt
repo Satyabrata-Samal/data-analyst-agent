@@ -6,4 +6,5 @@ pydantic-settings
 pandas
 numpy
 python-dotenv
+streamlit
 pytest

@@ -89,10 +89,16 @@ def run_responder(state: AgentState) -> dict[str, Any]:
             validation_result=validation_result,
         )
 
+        # The prose answer is otherwise only printed to stdout; persist it on
+        # state so non-CLI frontends (e.g. Streamlit) can display it.
+        final_response_dict = final_response.model_dump()
+        final_response_dict["natural_language_response"] = natural_language_response
+
         exit_log = log_node_exit(logger, "responder", {"complete": True})
 
         return {
-            "final_response": final_response.model_dump(),
+            "final_response": final_response_dict,
+            "natural_language_response": natural_language_response,
             "agent_log": [entry_log, exit_log],
         }
     except anthropic.AuthenticationError:
